@@ -1,0 +1,56 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/Proxtron/members-only#readme",
+  "bugs": {
+    "url": "https://github.com/Proxtron/members-only/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Proxtron/members-only.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx --watch --env-file=.env src/app.ts",
+    "build": "prisma generate && tsc && copyfiles -u 1 \"src/views/**/*\" \"src/public/**/*\" dist/src",
+    "clean": "rm -rf dist",
+    "start": "node ./dist/src/app.js"
+  },
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.8.0",
+    "@prisma/client": "^7.8.0",
+    "@quixo3/prisma-session-store": "^3.1.19",
+    "@supabase/supabase-js": "^2.105.0",
+    "@types/bcrypt": "^6.0.0",
+    "@types/connect-flash": "^0.0.40",
+    "@types/ejs": "^3.1.5",
+    "@types/express": "^5.0.6",
+    "@types/express-session": "^1.18.2",
+    "@types/multer": "^2.1.0",
+    "@types/passport": "^1.0.17",
+    "@types/passport-local": "^1.0.38",
+    "bcrypt": "^6.0.0",
+    "connect-flash": "^0.1.1",
+    "copyfiles": "^2.4.1",
+    "dotenv": "^17.4.2",
+    "ejs": "^4.0.1",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "express-validator": "^7.3.1",
+    "multer": "^2.1.1",
+    "passport": "^0.7.0",
+    "passport-local": "^1.0.0",
+    "pg": "^8.21.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.1",
+    "@types/pg": "^8.20.0",
+    "prisma": "^7.8.0"
+  }
+}
