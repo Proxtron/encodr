@@ -10,11 +10,11 @@ import indexRouter from "./routes/indexRouter.js";
 // import flash from "connect-flash";
 // import passportConfig from "./config/passportConfig.js";
 import { AppError } from "./error/error.js";
+import cors from "cors";
 
 const app = express();
 
-app.set("views", path.join(import.meta.dirname, "views"));
-app.set("view engine", "ejs");
+app.use(cors({ origin: "http://localhost:5173" }));
 
 const assetsPath = path.join(import.meta.dirname, "public");
 app.use(express.static(assetsPath));
