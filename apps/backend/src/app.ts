@@ -2,15 +2,16 @@ import express from "express";
 import "dotenv/config";
 import path from "node:path";
 import type { Request, Response, NextFunction } from "express";
-import session from "express-session";
-import { PrismaSessionStore } from "@quixo3/prisma-session-store";
-import { prisma } from "./db/prisma.js"
+// import session from "express-session";
+// import { PrismaSessionStore } from "@quixo3/prisma-session-store";
+// import { prisma } from "./db/prisma.js"
 import indexRouter from "./routes/indexRouter.js";
 // import passport from "passport";
 // import flash from "connect-flash";
 // import passportConfig from "./config/passportConfig.js";
 import { AppError } from "./error/error.js";
 import cors from "cors";
+import videoRouter from "./routes/videoRouter.js";
 
 const app = express();
 
@@ -42,6 +43,7 @@ app.use(express.urlencoded({ extended: true }));
 
 //Routers
 app.use("/", indexRouter);
+app.use("/video", videoRouter)
 
 //Error handler
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
