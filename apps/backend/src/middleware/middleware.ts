@@ -20,15 +20,9 @@ export const validateForm = (req: Request, res: Response, next: NextFunction) =>
     next();
 }
 
-export const validationResultMiddleware = (
-    view: string = "error", 
-) => {
+export const validationResultMiddleware = () => {
     return (req: Request, res: Response, next: NextFunction) => {
         const errors = validationResult(req).array().map((error) => error.msg);
-        if(errors.length > 0) {
-            return res.status(400).render(view, {message: errors[0]});
-        } else {
-            next();
-        }
+        return res.status(400).json({message: errors[0]});
     }
 }

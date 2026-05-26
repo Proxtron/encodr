@@ -21,5 +21,8 @@ model Session {
 
 model Video {
   id Int @id @default(autoincrement())
+  uploadName String 
+  uuidName String @unique
+  extension String
 }
 
