@@ -7,7 +7,7 @@ import { defaultLayoutIcons, DefaultVideoLayout } from '@vidstack/react/player/l
 function App() {
   return (
     <main className={styles.main}>
-      <MediaPlayer src="http://localhost:3000/videos/master.m3u8">
+      <MediaPlayer src="https://df4qrk6fd82vl.cloudfront.net/output/webds_1080/master.m3u8">
         <MediaProvider />
         <DefaultVideoLayout icons={defaultLayoutIcons} />
       </MediaPlayer>

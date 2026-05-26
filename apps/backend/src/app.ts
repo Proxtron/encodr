@@ -47,11 +47,11 @@ app.use("/video", videoRouter)
 
 //Error handler
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-    if(err instanceof AppError) {
-        return res.status(err.statusCode).render("error", {message: err.message});
-    }
     console.error(err);
-    res.status(500).render("error", {message: "Something went wrong"});
+    if(err instanceof AppError) {
+        return res.status(err.statusCode).json({message: err.message});
+    }
+    res.status(500).json({message: "Something went wrong"});
 });
 
 

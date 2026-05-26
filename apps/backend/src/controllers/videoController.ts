@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import path from "node:path";
 
-export const getVideo = (req: Request, res: Response, next: NextFunction) => {
-    return res.sendFile(path.join(import.meta.dirname));
+export const getVideo = async (req: Request, res: Response, next: NextFunction) => {
+    const key = "output/webds_1080/master.m3u8";
+    res.json({key});
 }
