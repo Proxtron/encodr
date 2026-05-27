@@ -1,11 +1,11 @@
-import styles from "./App.module.css"
+import styles from "./VideoPage.module.css"
 import '@vidstack/react/player/styles/default/theme.css';
 import '@vidstack/react/player/styles/default/layouts/video.css';
 import { MediaPlayer, MediaProvider } from '@vidstack/react';
 import { defaultLayoutIcons, DefaultVideoLayout } from '@vidstack/react/player/layouts/default';
 import { useEffect, useState } from "react";
 
-function App() {
+function VideoPage() {
   const [link, setLink] = useState<string>();
 
   useEffect(() => {
@@ -27,4 +27,4 @@ function App() {
   )
 }
 
-export default App
+export default VideoPage;

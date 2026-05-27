@@ -1,0 +1,33 @@
+.homePageContainer {
+   max-width:1400px; 
+   width: 95%;
+   margin: 0 auto;
+   display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+   grid-template-rows: auto;
+   gap: 1.5rem;
+}
+
+.videoContainer {
+    text-decoration: none;
+}
+
+.videoContainer:hover .videoThumbnail {
+    filter:brightness(60%);
+}
+
+.videoThumbnail {
+    width: 100%;
+    height:250px;
+    border-radius: 1rem;
+    object-fit: cover;
+    filter:brightness(100%);
+    transition: .3s;
+}
+
+.videoTitle {
+    margin: .75rem 0;
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: black;
+}
