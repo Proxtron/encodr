@@ -10,6 +10,6 @@ export const getVideo = async (req: Request<{
 
     if(!videoInfo) throw new AppError("Video not found", 404);
 
-    const key = `output/${videoInfo.uuidName}/master.m3u8`;
-    return res.json({key});
+    const link = `https://df4qrk6fd82vl.cloudfront.net/output/${videoInfo.uuidName}/master.m3u8`;
+    return res.json({link});
 }

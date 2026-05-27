@@ -20,9 +20,8 @@ export const validateForm = (req: Request, res: Response, next: NextFunction) =>
     next();
 }
 
-export const validationResultMiddleware = () => {
-    return (req: Request, res: Response, next: NextFunction) => {
-        const errors = validationResult(req).array().map((error) => error.msg);
-        return res.status(400).json({message: errors[0]});
-    }
+export const validationResultMiddleware = (req: Request, res: Response, next: NextFunction) => {
+    const errors = validationResult(req).array().map((error) => error.msg);
+    if(errors.length > 0)  return res.status(400).json({message: errors[0]});
+    next();
 }

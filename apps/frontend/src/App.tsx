@@ -3,11 +3,23 @@ import '@vidstack/react/player/styles/default/theme.css';
 import '@vidstack/react/player/styles/default/layouts/video.css';
 import { MediaPlayer, MediaProvider } from '@vidstack/react';
 import { defaultLayoutIcons, DefaultVideoLayout } from '@vidstack/react/player/layouts/default';
+import { useEffect, useState } from "react";
 
 function App() {
+  const [link, setLink] = useState<string>();
+
+  useEffect(() => {
+    fetch("http://localhost:3000/video/2")
+    .then(async (response) => {
+      const body = await response.json();
+      setLink(body.link);
+    });
+  }, []);
+
+
   return (
     <main className={styles.main}>
-      <MediaPlayer src="https://df4qrk6fd82vl.cloudfront.net/output/webds_1080/master.m3u8">
+      <MediaPlayer src={link}>
         <MediaProvider />
         <DefaultVideoLayout icons={defaultLayoutIcons} />
       </MediaPlayer>
