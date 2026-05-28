@@ -4,14 +4,18 @@ import '@vidstack/react/player/styles/default/layouts/video.css';
 import { MediaPlayer, MediaProvider } from '@vidstack/react';
 import { defaultLayoutIcons, DefaultVideoLayout } from '@vidstack/react/player/layouts/default';
 import { useEffect, useState } from "react";
+import { useParams } from "react-router";
+import { apiRequest } from "../../utils/client";
 
 function VideoPage() {
-  const [link, setLink] = useState<string>();
+  const [ link, setLink ] = useState<string>();
+  const { id } = useParams<{id: string}>();
 
   useEffect(() => {
-    fetch("http://localhost:3000/video/2")
-    .then(async (response) => {
-      const body = await response.json();
+    apiRequest<{
+      link: string
+    }>(`/video/${id}`)
+    .then((body) => {
       setLink(body.link);
     });
   }, []);
