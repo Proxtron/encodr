@@ -13,3 +13,8 @@ export const getVideo = async (req: Request<{
     const link = `https://df4qrk6fd82vl.cloudfront.net/output/${videoInfo.uuidName}/master.m3u8`;
     return res.json({link});
 }
+
+export const getAllVideos = async (req: Request, res: Response, next: NextFunction) => {
+    const videos = await video.retrieveAll();
+    return res.json({videos});
+}

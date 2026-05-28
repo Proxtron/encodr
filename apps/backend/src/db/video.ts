@@ -5,3 +5,7 @@ export const retrieve = async (id: number) => {
         where: {id}
     });
 }
+
+export const retrieveAll = async () => {
+    return await prisma.video.findMany();
+}

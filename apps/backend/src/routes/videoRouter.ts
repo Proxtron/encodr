@@ -11,4 +11,8 @@ videoRouter.get("/:id",
     videoController.getVideo
 );
 
+videoRouter.get("/",
+    videoController.getAllVideos
+)
+
 export default videoRouter;
