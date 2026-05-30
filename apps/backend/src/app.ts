@@ -1,17 +1,15 @@
 import express from "express";
 import "dotenv/config";
 import path from "node:path";
-import type { Request, Response, NextFunction } from "express";
 // import session from "express-session";
 // import { PrismaSessionStore } from "@quixo3/prisma-session-store";
 // import { prisma } from "./db/prisma.js"
-import indexRouter from "./routes/indexRouter.js";
 // import passport from "passport";
 // import flash from "connect-flash";
 // import passportConfig from "./config/passportConfig.js";
-import { AppError } from "./error/error.js";
 import cors from "cors";
 import videoRouter from "./routes/videoRouter.js";
+import { errorHandler } from "./middleware/error.js";
 
 const app = express();
 
@@ -42,18 +40,10 @@ app.use(express.urlencoded({ extended: true }));
 // });
 
 //Routers
-app.use("/", indexRouter);
 app.use("/video", videoRouter)
 
 //Error handler
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-    console.error(err);
-    if(err instanceof AppError) {
-        return res.status(err.statusCode).json({message: err.message});
-    }
-    return res.status(500).json({message: "Something went wrong"});
-});
-
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
