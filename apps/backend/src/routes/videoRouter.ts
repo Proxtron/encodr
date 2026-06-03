@@ -1,7 +1,7 @@
 import { Router } from "express";
 import * as videoController from "../controllers/videoController.js"
 import { param, body } from "express-validator";
-import { validationResultMiddleware } from "../middleware/middleware.js";
+import { validationResultMiddleware } from "../middleware/validate.js";
 
 const videoRouter = Router();
 
