@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { apiRequest } from "../utils/client";
 import styles from "./HomePage.module.css"
 import { Link } from "react-router";
-import DefaultThumbnail from "../../public/default_thumbnail.png"
+import DefaultThumbnail from "../assets/default_thumbnail.png"
 
 interface Video {
   id: number;

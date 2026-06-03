@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import * as video from "../db/video.js"
 import { AppError } from "../error/error.js";
+import { buildHlsUrl } from "../services/playback.js";
 
 export const getVideo = async (req: Request<{
     id: string
@@ -10,7 +11,7 @@ export const getVideo = async (req: Request<{
 
     if(!videoInfo) throw new AppError("Video not found", 404);
 
-    const link = `https://df4qrk6fd82vl.cloudfront.net/output/${videoInfo.uuidName}/master.m3u8`;
+    const link = buildHlsUrl(videoInfo.uuidName);
     return res.json({link});
 }
 

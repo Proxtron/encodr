@@ -4,13 +4,12 @@ import { createReadStream } from "node:fs";
 import { join, relative } from "node:path";
 import { PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
 import type { Readable } from "node:stream";
+import { env } from "./env.js";
 
-const region = process.env.AWS_REGION;
-if (!region) throw new Error("AWS_REGION env var is not set");
+const region = env.AWS_REGION;
+const bucketName = env.S3_BUCKET_NAME;
+
 export const s3 = new S3Client({ region });
-
-const bucketName = process.env.S3_BUCKET_NAME;
-if (!bucketName) throw new Error("S3_BUCKET_NAME env var is not set");
 
 export async function uploadFile(
     fileName: string,

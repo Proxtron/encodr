@@ -1,5 +1,6 @@
-import express from "express";
 import "dotenv/config";
+import { env } from "./config/env.js";
+import express from "express";
 import path from "node:path";
 // import session from "express-session";
 // import { PrismaSessionStore } from "@quixo3/prisma-session-store";
@@ -13,7 +14,7 @@ import { errorHandler } from "./middleware/error.js";
 
 const app = express();
 
-app.use(cors({ origin: "http://localhost:5173" }));
+app.use(cors({ origin: env.CLIENT_HOST }));
 
 const assetsPath = path.join(import.meta.dirname, "public");
 app.use(express.static(assetsPath));
@@ -45,7 +46,7 @@ app.use("/video", videoRouter)
 //Error handler
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 3000;
+const PORT = env.PORT;
 app.listen(PORT, () => {
-    console.log("Listening on port 3000")
+    console.log(`Listening on port ${PORT}`);
 });
