@@ -5,11 +5,29 @@ import { join, relative } from "node:path";
 import { PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
 import type { Readable } from "node:stream";
 import { env } from "./env.js";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 const region = env.AWS_REGION;
 const bucketName = env.S3_BUCKET_NAME;
 
 export const s3 = new S3Client({ region });
+
+export async function getUploadPresignedUrl(fileKey: string, contentType: string) {
+  const command = new PutObjectCommand({
+    Bucket: bucketName,
+    Key: fileKey,
+    ContentType: contentType
+  });
+
+  try {
+    // Generate a URL that is valid for 5 minutes (300 seconds)
+    const presignedUrl = await getSignedUrl(s3, command, { expiresIn: 300 });
+    return presignedUrl;
+  } catch (error) {
+    console.error("Error creating presigned URL", error);
+    throw error;
+  }
+}
 
 export async function uploadFile(
     fileName: string,

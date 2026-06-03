@@ -18,6 +18,7 @@ app.use(cors({ origin: env.CLIENT_HOST }));
 
 const assetsPath = path.join(import.meta.dirname, "public");
 app.use(express.static(assetsPath));
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // const sessionSecret = process.env.SECRET;

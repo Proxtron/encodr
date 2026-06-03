@@ -9,3 +9,9 @@ export const retrieve = async (id: number) => {
 export const retrieveAll = async () => {
     return await prisma.video.findMany();
 }
+
+export const insert = async (extension: string, uploadName: string, uuidName: string) => {
+    return await prisma.video.create({
+        data: {extension, uploadName, uuidName}
+    });
+}
