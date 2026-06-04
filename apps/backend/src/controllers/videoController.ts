@@ -11,7 +11,7 @@ export const getVideo = async (req: Request<{
 }>, res: Response, next: NextFunction) => {
     const id = parseInt(req.params.id);
     const videoInfo = await video.retrieve(id);
-    throw new Error("fsaldkfjs");
+
     if(!videoInfo) throw new AppError("Video not found", 404);
 
     const link = buildHlsUrl(videoInfo.uuidName);
@@ -31,7 +31,7 @@ export const insertVideo = async (req: Request<{}, {}, {
     const { basename, extension } = separateNameAndExtension(filename);
     const uuidName = randomUUID();
 
-    const insertedVideo = await video.insert(extension, basename, uuidName);
+    const insertedVideo = await video.insert(extension, basename, uuidName, "PENDING");
     const videoId = insertedVideo.id;
 
     const presignedUrl = await generatePresignedUploadUrl(uuidName);

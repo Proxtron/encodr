@@ -7,6 +7,14 @@ datasource db {
   provider = "postgresql"
 }
 
+enum VideoStatus {
+  PENDING
+  QUEUED
+  PROCESSING
+  READY
+  FAILED
+}
+
 model Session {
   id        String   @id
   sid       String   @unique
@@ -15,8 +23,9 @@ model Session {
 }
 
 model Video {
-  id         Int    @id @default(autoincrement())
-  uploadName String
-  uuidName   String @unique
-  extension  String
+  id          Int         @id @default(autoincrement())
+  uploadName  String
+  uuidName    String      @unique
+  extension   String
+  status VideoStatus @default(PENDING)
 }
