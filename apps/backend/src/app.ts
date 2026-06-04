@@ -11,6 +11,8 @@ import path from "node:path";
 import cors from "cors";
 import videoRouter from "./routes/videoRouter.js";
 import { errorHandler } from "./middleware/error.js";
+import { pinoHttp } from "pino-http";
+import { logger } from "./config/logger.js";
 
 const app = express();
 
@@ -20,6 +22,7 @@ const assetsPath = path.join(import.meta.dirname, "public");
 app.use(express.static(assetsPath));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(pinoHttp( { logger }));
 
 // const sessionSecret = process.env.SECRET;
 // if(!sessionSecret) throw new Error("SECRET env var is not set");
