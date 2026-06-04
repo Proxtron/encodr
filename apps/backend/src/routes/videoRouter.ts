@@ -16,10 +16,8 @@ videoRouter.get("/",
 )
 
 videoRouter.post("/",
-    body("filename").trim().notEmpty().withMessage("Video file name is required")
-    // 1. Ensure it ends exactly with .mp4 (case-insensitive)
-    // 2. Reject illegal OS filename characters (\ / : * ? " < > |)
-    .matches(/^[^\\/:\*\?"<>\|]+\.mp4$/i).withMessage('Invalid file name. It must be a valid name ending in .mp4.'),
+    body("title").trim().notEmpty().withMessage("Video title is required"),
+    body("mimeType").trim().equals("video/mp4").withMessage("Video must be an mp4"),
     validationResultMiddleware,
     videoController.insertVideo
 );

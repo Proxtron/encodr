@@ -7,7 +7,7 @@ import DefaultThumbnail from "../assets/default_thumbnail.png"
 interface Video {
   id: number;
   uuidName: string;
-  uploadName: string;
+  title: string;
   extension: string;
 }
 
@@ -27,7 +27,7 @@ function HomePage() {
         videos.map((video) => 
           <Link to={`/video/${video.id}`} className={styles.videoContainer} key={video.id}>
             <img className={styles.videoThumbnail} src={DefaultThumbnail}></img>
-            <h2 className={styles.videoTitle}>{video.uploadName}</h2>
+            <h2 className={styles.videoTitle}>{video.title}</h2>
           </Link>
         )
       }

@@ -11,8 +11,8 @@ export const retrieveAll = async () => {
     return await prisma.video.findMany();
 }
 
-export const insert = async (extension: string, uploadName: string, uuidName: string, status: VideoStatus) => {
+export const insert = async (extension: string, title: string, uuidName: string, status: VideoStatus) => {
     return await prisma.video.create({
-        data: {extension, uploadName, uuidName}
+        data: {extension, title, uuidName, status}
     });
 }

@@ -24,7 +24,7 @@ model Session {
 
 model Video {
   id          Int         @id @default(autoincrement())
-  uploadName  String
+  title       String      @default("")
   uuidName    String      @unique
   extension   String
   status VideoStatus @default(PENDING)

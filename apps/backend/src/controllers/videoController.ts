@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from "express";
 import * as video from "../db/video.js"
 import { AppError } from "../error/error.js";
 import { buildHlsUrl } from "../services/playback.js";
-import { separateNameAndExtension } from "../services/video.js";
 import { randomUUID } from "crypto";
 import { generatePresignedUploadUrl } from "../services/presign.js";
 
@@ -24,14 +23,12 @@ export const getAllVideos = async (req: Request, res: Response, next: NextFuncti
 }
 
 export const insertVideo = async (req: Request<{}, {}, {
-    filename: string
+    title: string,
 }>, res: Response, next: NextFunction) => {
-    const filename = req.body.filename;
-
-    const { basename, extension } = separateNameAndExtension(filename);
+    const { title } = req.body
     const uuidName = randomUUID();
 
-    const insertedVideo = await video.insert(extension, basename, uuidName, "PENDING");
+    const insertedVideo = await video.insert("mp4", title, uuidName, "PENDING");
     const videoId = insertedVideo.id;
 
     const presignedUrl = await generatePresignedUploadUrl(uuidName);
