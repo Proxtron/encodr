@@ -6,11 +6,12 @@ import { PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
 import type { Readable } from "node:stream";
 import { env } from "./env.js";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { type NodeJsClient } from "@smithy/types";
 
 const region = env.AWS_REGION;
 const bucketName = env.S3_BUCKET_NAME;
 
-export const s3 = new S3Client({ region });
+export const s3 = new S3Client({ region }) as NodeJsClient<S3Client>;
 
 export async function getUploadPresignedUrl(fileKey: string, contentType: string) {
   const command = new PutObjectCommand({

@@ -15,13 +15,17 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx --watch --env-file=.env src/app.ts",
+    "dev:redis": "redis-server",
+    "dev:sqs": "tsx --watch --env-file=.env src/sqs-consumer.ts",
+    "dev:express": "tsx --watch --env-file=.env src/app.ts",
+    "dev": "concurrently \"npm run dev:redis\" \"npm run dev:sqs\" \"npm run dev:express\"",
     "build": "prisma generate && tsc && copyfiles -u 1 \"src/views/**/*\" \"src/public/**/*\" dist/src",
     "clean": "rm -rf dist",
     "start": "node ./dist/src/app.js"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1053.0",
+    "@aws-sdk/client-sqs": "^3.1062.0",
     "@aws-sdk/s3-request-presigner": "^3.1060.0",
     "@prisma/adapter-pg": "^7.8.0",
     "@prisma/client": "^7.8.0",
@@ -47,6 +51,7 @@
     "pg": "^8.21.0",
     "pino": "^10.3.1",
     "pino-http": "^11.0.0",
+    "sqs-consumer": "^15.0.2",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "zod": "^4.4.3"

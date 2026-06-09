@@ -16,7 +16,7 @@ const schema = z.object({
     AWS_ACCESS_KEY_ID: z.string(),
     AWS_SECRET_ACCESS_KEY: z.string(),
     S3_BUCKET_NAME: z.string(),
-    // SQS_QUEUE_URL: z.string().url(),
+    SQS_QUEUE_URL: z.string().url(),
 
     // delivery
     CDN_HOST: z.string(),

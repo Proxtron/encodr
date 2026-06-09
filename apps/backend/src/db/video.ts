@@ -16,3 +16,10 @@ export const insert = async (extension: string, title: string, uuidName: string,
         data: {extension, title, uuidName, status}
     });
 }
+
+export const updateStatus = async (uuidName: string, status: VideoStatus) => {
+    return await prisma.video.update({
+        where: { uuidName },
+        data: { status }
+    })
+}
