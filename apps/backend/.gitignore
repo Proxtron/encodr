@@ -4,3 +4,4 @@ dist/
 /generated/prisma
 src/public/videos
 dump.rdb
+tmp/

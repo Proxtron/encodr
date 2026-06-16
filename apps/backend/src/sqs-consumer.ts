@@ -10,23 +10,27 @@ const app = Consumer.create({
     queueUrl: env.SQS_QUEUE_URL,
     sqs,
     handleMessage: async (message) => {
-        if(!message.Body) return;
+        if(!message.Body) return message;
 
         const messageBody = JSON.parse(message.Body) as S3Event;
-        if(!messageBody.Records) return; //S3:TestEvent skip
+        if(!messageBody.Records) return message; //S3:TestEvent skip
 
         for(const record of messageBody.Records) {
-            const key = record.s3.object.key;
-            if(record.s3.configurationId === "transcode-on-upload") {
-                const job = await transcodingQueue.add("transcode", {
-                    bucket: record.s3.bucket,
-                    key
-                });
+            if(record.s3.configurationId !== "transcode-on-upload") continue;
 
-                const uuid = extractUuidFromS3UploadPath(key);
-                if(!uuid) return;
-                await updateStatus(uuid, "QUEUED");
+            const key = decodeURIComponent(record.s3.object.key.replace(/\+/g, " "));
+            const uuid = extractUuidFromS3UploadPath(key);
+            if(!uuid) {
+                console.error(`Could not extract uuid from key: ${key}`);
+                continue;
             }
+
+            const job = await transcodingQueue.add("transcode", { uploadS3Key: key, uuid });
+            console.log(`Enqueued job ${job.id} on "${job.queueName}"`);
+            const numOfJobInTrancodeQueue = (await transcodingQueue.getJobs()).length;
+            console.log(`${numOfJobInTrancodeQueue} jobs in transcoding queue`)
+
+            await updateStatus(uuid, "QUEUED");
         }
         
         return message;
