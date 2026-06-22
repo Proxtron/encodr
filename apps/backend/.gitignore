@@ -3,3 +3,5 @@ node_modules/
 dist/
 /generated/prisma
 src/public/videos
+dump.rdb
+tmp/

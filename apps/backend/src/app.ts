@@ -1,25 +1,28 @@
-import express from "express";
 import "dotenv/config";
+import { env } from "./config/env.js";
+import express from "express";
 import path from "node:path";
-import type { Request, Response, NextFunction } from "express";
 // import session from "express-session";
 // import { PrismaSessionStore } from "@quixo3/prisma-session-store";
 // import { prisma } from "./db/prisma.js"
-import indexRouter from "./routes/indexRouter.js";
 // import passport from "passport";
 // import flash from "connect-flash";
 // import passportConfig from "./config/passportConfig.js";
-import { AppError } from "./error/error.js";
 import cors from "cors";
 import videoRouter from "./routes/videoRouter.js";
+import { errorHandler } from "./middleware/error.js";
+import { pinoHttp } from "pino-http";
+import { logger } from "./config/logger.js";
 
 const app = express();
 
-app.use(cors({ origin: "http://localhost:5173" }));
+app.use(cors({ origin: env.CLIENT_HOST }));
 
 const assetsPath = path.join(import.meta.dirname, "public");
 app.use(express.static(assetsPath));
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(pinoHttp( { logger }));
 
 // const sessionSecret = process.env.SECRET;
 // if(!sessionSecret) throw new Error("SECRET env var is not set");
@@ -42,20 +45,12 @@ app.use(express.urlencoded({ extended: true }));
 // });
 
 //Routers
-app.use("/", indexRouter);
 app.use("/video", videoRouter)
 
 //Error handler
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-    console.error(err);
-    if(err instanceof AppError) {
-        return res.status(err.statusCode).json({message: err.message});
-    }
-    return res.status(500).json({message: "Something went wrong"});
-});
+app.use(errorHandler);
 
-
-const PORT = process.env.PORT || 3000;
+const PORT = env.PORT;
 app.listen(PORT, () => {
-    console.log("Listening on port 3000")
+    console.log(`Listening on port ${PORT}`);
 });

@@ -1,0 +1,150 @@
+.overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    z-index: 1000;
+}
+
+.modal {
+    background-color: #fff;
+    color: #111;
+    width: 100%;
+    max-width: 640px;
+    border-radius: .75rem;
+    padding: 1.5rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modalHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+}
+
+.title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.closeButton {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    color: #555;
+    padding: 0;
+}
+
+.closeButton:hover {
+    color: #111;
+}
+
+.dropzone {
+    border: 2px dashed #ccc;
+    border-radius: .5rem;
+    padding: 2.5rem 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color .15s, background-color .15s;
+}
+
+.dropzone:hover,
+.dropzoneActive {
+    border-color: #111;
+    background-color: #fafafa;
+}
+
+.hiddenInput {
+    display: none;
+}
+
+.uploadIcon {
+    width: 48px;
+    height: 48px;
+    color: #888;
+    margin-bottom: .75rem;
+}
+
+.dropPrimary {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #111;
+    word-break: break-all;
+}
+
+.dropSecondary {
+    margin: .35rem 0 0;
+    font-size: .9rem;
+    color: #888;
+}
+
+.label {
+    display: block;
+    margin: 1.25rem 0 .4rem;
+    font-weight: 700;
+    font-size: .95rem;
+}
+
+.input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: .7rem .85rem;
+    border: 1px solid #ddd;
+    border-radius: .5rem;
+    font-size: 1rem;
+    font-family: inherit;
+    color: #111;
+    background-color: #fff;
+}
+
+.input::placeholder {
+    color: #999;
+}
+
+.input:focus {
+    outline: none;
+    border-color: #111;
+}
+
+.textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+
+.error {
+    margin: 1rem 0 0;
+    color: #c0322b;
+    font-size: .9rem;
+}
+
+.uploadButton {
+    width: 100%;
+    margin-top: 1.5rem;
+    padding: .85rem;
+    background-color: #111;
+    color: #fff;
+    border: none;
+    border-radius: .5rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.uploadButton:hover:not(:disabled) {
+    background-color: #000;
+}
+
+.uploadButton:disabled {
+    background-color: #999;
+    cursor: not-allowed;
+}

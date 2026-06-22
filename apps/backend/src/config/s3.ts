@@ -1,12 +1,34 @@
+import { S3Client } from "@aws-sdk/client-s3";
 import { readdir } from "node:fs/promises";
 import { createReadStream } from "node:fs";
 import { join, relative } from "node:path";
 import { PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
-import { s3 } from "../config/s3Config.js";
 import type { Readable } from "node:stream";
+import { env } from "./env.js";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { type NodeJsClient } from "@smithy/types";
 
-const bucketName = process.env.S3_BUCKET_NAME;
-if (!bucketName) throw new Error("S3_BUCKET_NAME env var is not set");
+const region = env.AWS_REGION;
+const bucketName = env.S3_BUCKET_NAME;
+
+export const s3 = new S3Client({ region }) as NodeJsClient<S3Client>;
+
+export async function getUploadPresignedUrl(fileKey: string, contentType: string) {
+  const command = new PutObjectCommand({
+    Bucket: bucketName,
+    Key: fileKey,
+    ContentType: contentType
+  });
+
+  try {
+    // Generate a URL that is valid for 5 minutes (300 seconds)
+    const presignedUrl = await getSignedUrl(s3, command, { expiresIn: 300 });
+    return presignedUrl;
+  } catch (error) {
+    console.error("Error creating presigned URL", error);
+    throw error;
+  }
+}
 
 export async function uploadFile(
     fileName: string,

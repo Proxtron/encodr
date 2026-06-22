@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { apiRequest } from "../utils/client";
 import styles from "./HomePage.module.css"
 import { Link } from "react-router";
-import DefaultThumbnail from "../../public/default_thumbnail.png"
+import DefaultThumbnail from "../assets/default_thumbnail.png"
 
 interface Video {
   id: number;
   uuidName: string;
-  uploadName: string;
+  title: string;
   extension: string;
 }
 
@@ -27,7 +27,7 @@ function HomePage() {
         videos.map((video) => 
           <Link to={`/video/${video.id}`} className={styles.videoContainer} key={video.id}>
             <img className={styles.videoThumbnail} src={DefaultThumbnail}></img>
-            <h2 className={styles.videoTitle}>{video.uploadName}</h2>
+            <h2 className={styles.videoTitle}>{video.title}</h2>
           </Link>
         )
       }
