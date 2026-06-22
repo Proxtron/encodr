@@ -10,7 +10,6 @@ const schema = z.object({
 
     // redis
     REDIS_URL: z.string().url(),
-    BULLMQ_QUEUE_NAME: z.string(),
 
     // aws
     AWS_REGION: z.string(),

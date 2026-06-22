@@ -26,10 +26,6 @@ const app = Consumer.create({
             }
 
             const job = await transcodingQueue.add("transcode", { uploadS3Key: key, uuid });
-            console.log(`Enqueued job ${job.id} on "${job.queueName}"`);
-            const numOfJobInTrancodeQueue = (await transcodingQueue.getJobs()).length;
-            console.log(`${numOfJobInTrancodeQueue} jobs in transcoding queue`)
-
             await updateStatus(uuid, "QUEUED");
         }
         
