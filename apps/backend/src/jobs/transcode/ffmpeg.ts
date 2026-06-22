@@ -28,7 +28,7 @@ const probeHeight = async (path: string) => {
 }
 
 const pickRungs = (uploadHeight: number) => {
-    const rungs = LADDER.filter((rung) => uploadHeight > rung.height);
+    const rungs = LADDER.filter((rung) => uploadHeight >= rung.height);
     return rungs;
 }
 
