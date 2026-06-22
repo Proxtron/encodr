@@ -5,6 +5,7 @@ import os from "node:os";
 import connection from "./config/redis.js";
 import { TranscodeJobData } from "./types/jobs.js";
 import { uploadQueue } from "./queues/uploadQueue.js";
+import * as Video from "./db/video.js"
 
 /*
 Transcode worker handles transcode jobs that spawn ffmpeg child processes. These ffmpeg processes are CPU intensive.
@@ -19,6 +20,7 @@ transcodeWorker.on("completed", (job) =>  {
 
 transcodeWorker.on("failed", (job, err) => {
     console.error(`Transcoding job ${job?.id} failed`, err);
+    if(job) Video.updateStatus(job.data.uuid, "FAILED");
 });
 
 /*
@@ -33,4 +35,5 @@ uploadWorker.on("completed", (job) => {
 
 uploadWorker.on("failed", (job, err) => {
     console.error(`Uploading job ${job?.id} failed`, err);
+    if(job) Video.updateStatus(job.data.uuid, "FAILED");
 });
