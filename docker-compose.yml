@@ -1,0 +1,71 @@
+# docker-compose.yml — runs the whole encodr backend stack as one system.
+#
+# Mental model: each block under `services:` is basically one `docker run`
+# command written down. `docker compose up` runs them all; `docker compose
+# down` stops + removes them all.
+#
+# Run it:   docker compose up --build      (build images, then start)
+#           docker compose down            (stop + remove everything)
+#           docker compose logs -f worker  (tail one service)
+#
+# NETWORKING: compose puts every service on one private network and makes each
+# service name a hostname. So the api reaches Redis at host `redis`, port 6379
+# -> the `REDIS_URL: redis://redis:6379` override below. No IPs needed.
+
+services:
+  # ----------------------------------------------------------------
+  # Redis — NOT your code. Use the official image; never build this.
+  # In production you'd swap this for a managed service (e.g. ElastiCache).
+  # ----------------------------------------------------------------
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379" # expose to your host so you can poke it with redis-cli
+
+  # ----------------------------------------------------------------
+  # api — the express server. This is the ONE service that `build:`s the
+  # backend image. The other two reuse the same image tag (encodr-backend).
+  # ----------------------------------------------------------------
+  api:
+    build:
+      context: . # repo root, so the lockfile is in scope
+      dockerfile: apps/backend/Dockerfile
+    image: encodr-backend # tag the built image so worker/consumer can reuse it
+    command: node ./dist/app.js
+    ports:
+      - "3000:3000" # host:container — reach the API at localhost:3000
+    env_file:
+      - apps/backend/.env # load your existing env vars...
+    environment:
+      REDIS_URL: redis://redis:6379 # ...but override Redis to the compose hostname
+    depends_on:
+      - redis
+
+  # ----------------------------------------------------------------
+  # worker — SAME image, different entrypoint. No ports (not a server).
+  # Scale it independently:  docker compose up --scale worker=3
+  # ----------------------------------------------------------------
+  worker:
+    image: encodr-backend
+    command: node ./dist/worker.js
+    env_file:
+      - apps/backend/.env
+    environment:
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      - redis
+      - api # ensures the image is built before this starts
+
+  # ----------------------------------------------------------------
+  # sqs-consumer — SAME image again, different entrypoint.
+  # ----------------------------------------------------------------
+  sqs-consumer:
+    image: encodr-backend
+    command: node ./dist/sqs-consumer.js
+    env_file:
+      - apps/backend/.env
+    environment:
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      - redis
+      - api

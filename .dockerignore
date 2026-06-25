@@ -1,0 +1,8 @@
+**/node_modules
+**/dist
+.git
+apps/frontend
+# Keep secrets out of the build context / image layers. Env is injected at
+# runtime via docker-compose `env_file:` instead.
+**/.env
+**/.env.*

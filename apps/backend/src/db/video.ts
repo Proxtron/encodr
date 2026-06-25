@@ -1,4 +1,4 @@
-import { VideoStatus } from "../../generated/prisma/enums.js";
+import { VideoStatus } from "../prisma/enums.js";
 import { prisma } from "../config/prisma.js"
 
 export const retrieve = async (id: number) => {

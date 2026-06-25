@@ -1,12 +1,12 @@
-import type { User as PrismaUser } from "@prisma/client";
+// import type { User as PrismaUser } from "@prisma/client";
 
-export {};
+// export {};
 
-declare global {
-    namespace Express {
-        interface User extends PrismaUser {}
-        interface Request {
-            folderPath?: string;
-        }
-    }
-}
+// declare global {
+//     namespace Express {
+//         interface User extends PrismaUser {}
+//         interface Request {
+//             folderPath?: string;
+//         }
+//     }
+// }
