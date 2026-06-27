@@ -4,6 +4,7 @@ import { AppError } from "../error/error.js";
 import { buildHlsUrl } from "../services/playback.js";
 import { randomUUID } from "crypto";
 import { generatePresignedUploadUrl } from "../services/presign.js";
+import { register } from "prom-client"
 
 export const getVideo = async (req: Request<{
     id: string
@@ -34,4 +35,9 @@ export const insertVideo = async (req: Request<{}, {}, {
     const presignedUrl = await generatePresignedUploadUrl(uuidName);
 
     return res.json({presignedUrl, videoId});
+}
+
+export const getMetrics = async (req: Request, res: Response, next: NextFunction) => {
+    res.set("Content-Type", register.contentType);
+    res.end(await register.metrics());
 }

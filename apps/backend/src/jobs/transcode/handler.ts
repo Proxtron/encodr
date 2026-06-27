@@ -50,11 +50,6 @@ export const handleUpload: Processor = async (job: Job<UploadJobData>) => {
         `Removing temp directory after syncing output to S3 bucket for uuid: ${uuid}`, 
         async () => await rm("tmp/", {recursive: true})
     );
-
-    await step(
-        `Updating status of video row to READY for uuid: ${uuid}`,
-        async () => await Video.updateStatus(uuid, "READY")
-    )
 }
 
 const step = async <T>(context: string, fn: () => Promise<T>): Promise<T> => {

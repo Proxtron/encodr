@@ -22,5 +22,9 @@ videoRouter.post("/",
     videoController.insertVideo
 );
 
+videoRouter.get("/metrics",
+    videoController.getMetrics
+)
+
 
 export default videoRouter;

@@ -1,5 +1,6 @@
 import util from "node:util";
 import { exec } from "node:child_process";
+import { transcodeDuration } from "../../services/metrics.js";
 const execAsync = util.promisify(exec);
 
 type Rung = { height: number, bitrate: string };
@@ -49,6 +50,7 @@ export const transcode = async (
 
     const { rungCount, splitVariables, scaleFilter, mapOptions, mapAudioOptions, varStreamMapArg  } = craftCommandComponents(rungs);
 
+    const end = transcodeDuration.startTimer({ resolution: `${height}p` });
     await execAsync(`
         ffmpeg -i ${inputPath} \
             -filter_complex \
@@ -64,6 +66,7 @@ export const transcode = async (
             -master_pl_name master.m3u8 \
             "${outputDirectory}stream_%v/playlist.m3u8"
     `);
+    end();
 }
 
 // Crafts command options and args based on the rungs selected for an input video

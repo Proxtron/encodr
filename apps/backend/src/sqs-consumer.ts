@@ -2,7 +2,7 @@ import { Consumer } from "sqs-consumer";
 import { env } from "./config/env.js";
 import { sqs } from "./config/sqs.js";
 import type { S3Event } from "aws-lambda";
-import { transcodingQueue } from "./queues/transcodeQueue.js";
+import { transcodingQueue } from "./queues/job-queues.js";
 import { updateStatus } from "./db/video.js";
 import { extractUuidFromS3UploadPath } from "./services/video.js";
 
