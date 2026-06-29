@@ -7,6 +7,9 @@ import { TranscodeJobData } from "./types/jobs.js";
 import { uploadQueue } from "./queues/job-queues.js";
 import * as Video from "./db/video.js"
 import { jobsCompleted, activeWorkers } from "./services/metrics.js";
+import express from "express";
+import { env } from "./config/env.js";
+import { register } from "prom-client";
 
 /*
 Transcode worker handles transcode jobs that spawn ffmpeg child processes. These ffmpeg processes are CPU intensive.
@@ -62,4 +65,17 @@ uploadWorker.on("failed", (job, err) => {
     activeWorkers.dec();
 
     if(job) Video.updateStatus(job.data.uuid, "FAILED");
+});
+
+
+// Serves metrics running on this worker process to prometheus
+const app = express();
+
+app.get("/metrics", async (req, res) => {
+    res.set("Content-Type", register.contentType);
+    res.end(await register.metrics());
+});
+
+app.listen(env.WORKER_PORT, () => {
+    console.log(`Worker HTTP Metrics API started on port ${env.WORKER_PORT}`);
 });

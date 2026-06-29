@@ -22,7 +22,13 @@ const schema = z.object({
     CDN_HOST: z.string(),
 
     // client
-    CLIENT_HOST: z.string().url()
+    CLIENT_HOST: z.string().url(),
+
+    // worker
+    WORKER_PORT: z.coerce.number(),
+
+    // sqs-consumer
+    SQS_CONSUMER_PORT: z.coerce.number()
 });
 
 const parsed = schema.safeParse(process.env);

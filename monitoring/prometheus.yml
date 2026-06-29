@@ -1,0 +1,23 @@
+# Prometheus scrape config.
+# Targets use docker-compose SERVICE NAMES as hostnames — Prometheus runs on
+# the same compose network, so `worker:9000` resolves to that container.
+# Default metrics_path is /metrics, so we don't need to specify it.
+
+global:
+  scrape_interval: 15s # how often to pull each target
+
+scrape_configs:
+  - job_name: worker
+    static_configs:
+      - targets: ["worker:9000"]
+
+  - job_name: sqs-consumer
+    static_configs:
+      - targets: ["sqs-consumer:9001"]
+
+  # The api currently exposes /metrics but registers no custom metrics yet.
+  # Leave it scraped so it's wired up for when you add request metrics +
+  # collectDefaultMetrics(). Remove if you don't want empty scrapes.
+  - job_name: api
+    static_configs:
+      - targets: ["api:3000"]
