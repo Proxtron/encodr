@@ -47,7 +47,21 @@ FROM node:lts-slim AS runtime
 WORKDIR /repo
 ENV NODE_ENV=production
 
-RUN apt-get update && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
+# Download ffmpeg
+RUN apt update && apt install ffmpeg -y
+
+# Download aws cli — pick the build matching the image architecture.
+# (aarch64 on arm64 hosts like Apple Silicon, x86_64 on amd64.)
+RUN apt update && apt install -y unzip curl \
+    && case "$(uname -m)" in \
+         x86_64)  AWS_ARCH=x86_64 ;; \
+         aarch64) AWS_ARCH=aarch64 ;; \
+         *) echo "unsupported arch: $(uname -m)" && exit 1 ;; \
+       esac \
+    && curl "https://awscli.amazonaws.com/awscli-exe-linux-${AWS_ARCH}.zip" -o "awscliv2.zip" \
+    && unzip awscliv2.zip \
+    && ./aws/install \
+    && rm -rf awscliv2.zip aws
 
 # Bring over only what's needed to RUN (not to build):
 COPY --from=build /repo/node_modules             ./node_modules

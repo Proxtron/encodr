@@ -5,8 +5,6 @@ import type { S3Event } from "aws-lambda";
 import { transcodingQueue } from "./queues/job-queues.js";
 import { updateStatus } from "./db/video.js";
 import { extractUuidFromS3UploadPath } from "./services/video.js";
-import express from "express";
-import { register } from "prom-client";
 
 const app = Consumer.create({
     queueUrl: env.SQS_QUEUE_URL,
@@ -36,15 +34,3 @@ const app = Consumer.create({
 });
 
 app.start();
-
-// Serves metrics running on this worker process to prometheus
-const metricsApi = express();
-
-metricsApi.get("/metrics", async (req, res) => {
-    res.set("Content-Type", register.contentType);
-    res.end(await register.metrics());
-});
-
-metricsApi.listen(env.SQS_CONSUMER_PORT, () => {
-    console.log(`SQS Consumer HTTP Metrics API started on port ${env.SQS_CONSUMER_PORT}`);
-});
