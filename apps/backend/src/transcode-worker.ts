@@ -11,7 +11,7 @@ import * as Video from "./db/video.js"
 Transcode worker handles transcode jobs that spawn ffmpeg child processes. These ffmpeg processes are CPU intensive.
 So we are setting the concurrency factor of this to be the number of cores on the machine
 */
-const transcodeWorker = new Worker<TranscodeJobData>("transcode", handleTranscode, { connection, concurrency: os.cpus().length });
+const transcodeWorker = new Worker<TranscodeJobData>("transcode", handleTranscode, { connection, concurrency: 1 });
 
 transcodeWorker.on("completed", (job) =>  {
     console.log(`Transcoding job ${job.id} completed`);

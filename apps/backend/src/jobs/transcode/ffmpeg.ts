@@ -51,6 +51,7 @@ export const transcode = async (
 
     await execAsync(`
         ffmpeg -i ${inputPath} \
+            --threads 1
             -filter_complex \
                 "[0:v]split=${rungCount}${splitVariables}; \
                 ${scaleFilter}" \

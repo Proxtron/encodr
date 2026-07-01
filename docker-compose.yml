@@ -29,6 +29,8 @@ services:
     depends_on:
       - redis
       - api 
+    deploy:
+      replicas: 1
 
   upload-worker:
     image: encodr-backend
