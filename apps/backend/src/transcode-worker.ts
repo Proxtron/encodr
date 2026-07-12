@@ -13,12 +13,17 @@ So we are setting the concurrency factor of this to be the number of cores on th
 */
 const transcodeWorker = new Worker<TranscodeJobData>("transcode", handleTranscode, { connection, concurrency: 1 });
 
-transcodeWorker.on("completed", (job) =>  {
-    console.log(`Transcoding job ${job.id} completed`);
-    uploadQueue.add("upload", { uuid: job.data.uuid });
+transcodeWorker.on('completed', (job) => {
+    if(job.finishedOn && job.processedOn)
+    console.log(JSON.stringify({
+        jobId: job.id,
+        startedAt: job.processedOn,
+        finishedAt: job.finishedOn,
+        durationMs: job.finishedOn - job.processedOn
+    }));
 });
 
 transcodeWorker.on("failed", (job, err) => {
     console.error(`Transcoding job ${job?.id} failed`, err);
-    if(job) Video.updateStatus(job.data.uuid, "FAILED");
+    // if(job) Video.updateStatus(job.data.uuid, "FAILED");
 });

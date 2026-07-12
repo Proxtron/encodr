@@ -67,6 +67,7 @@ RUN apt update && apt install -y unzip curl \
 COPY --from=build /repo/node_modules             ./node_modules
 COPY --from=build /repo/apps/backend/dist         ./apps/backend/dist
 COPY --from=build /repo/apps/backend/package.json ./apps/backend/
+COPY --from=build /repo/apps/backend/tmp/ ./apps/backend/tmp
 # Prisma schema is handy at runtime for migrations / introspection.
 COPY --from=build /repo/apps/backend/prisma       ./apps/backend/prisma
 

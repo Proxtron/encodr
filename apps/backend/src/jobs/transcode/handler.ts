@@ -14,23 +14,23 @@ export const handleTranscode: Processor = async (job: Job<TranscodeJobData>) => 
     const { uploadS3Key, uuid } = job.data;
 
     const tempUploadDirectory = `tmp/uploads/`;
-    const tempUploadPath = `${tempUploadDirectory}${uuid}.mp4`;
+    const tempUploadPath = `${tempUploadDirectory}about.mp4`;
 
-    const s3Stream = await getFile(uploadS3Key) as Readable;
-    if(!s3Stream) {
-        throw new Error(`File not retrieved from S3 bucket with key: ${uploadS3Key}`)
-    }
+    // const s3Stream = await getFile(uploadS3Key) as Readable;
+    // if(!s3Stream) {
+    //     throw new Error(`File not retrieved from S3 bucket with key: ${uploadS3Key}`)
+    // }
 
-    await step(
-        `Updating status of video row to PROCESSING for uuid: ${uuid}`,
-        async () => await Video.updateStatus(uuid, "PROCESSING")
-    );
+    // await step(
+    //     `Updating status of video row to PROCESSING for uuid: ${uuid}`,
+    //     async () => await Video.updateStatus(uuid, "PROCESSING")
+    // );
 
-    await step(`download ${uploadS3Key} -> ${tempUploadPath}`, async () => {
-        await mkdir(tempUploadDirectory, { recursive: true });
-        const tempUploadPathWriteStream = createWriteStream(tempUploadPath);
-        await pipeline(s3Stream, tempUploadPathWriteStream);
-    });
+    // await step(`download ${uploadS3Key} -> ${tempUploadPath}`, async () => {
+    //     await mkdir(tempUploadDirectory, { recursive: true });
+    //     const tempUploadPathWriteStream = createWriteStream(tempUploadPath);
+    //     await pipeline(s3Stream, tempUploadPathWriteStream);
+    // });
 
     const tempOutputDirectory = `tmp/output/${uuid}/`;
     await step(`transcode ${tempUploadPath} and generate hls segments and playlists in ${tempOutputDirectory}`, async () => {

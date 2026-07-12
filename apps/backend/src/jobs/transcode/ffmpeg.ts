@@ -50,8 +50,10 @@ export const transcode = async (
     const { rungCount, splitVariables, scaleFilter, mapOptions, mapAudioOptions, varStreamMapArg  } = craftCommandComponents(rungs);
 
     await execAsync(`
-        ffmpeg -i ${inputPath} \
-            --threads 1
+        ffmpeg -threads 1 \
+            -i ${inputPath} \
+            -filter_threads 1 \
+            -x264-params threads=1 \
             -filter_complex \
                 "[0:v]split=${rungCount}${splitVariables}; \
                 ${scaleFilter}" \

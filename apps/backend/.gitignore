@@ -6,3 +6,4 @@ src/public/videos
 dump.rdb
 tmp/
 src/prisma/
+test/
