@@ -1,4 +1,4 @@
-const backendURL = "http://localhost:3000";
+const backendURL = import.meta.env.VITE_API_URL;
 
 export const apiRequest = async <T>(path: string, options: RequestInit = {}) => {
     const url = `${backendURL}${path}`;
