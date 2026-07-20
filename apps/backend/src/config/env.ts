@@ -4,6 +4,7 @@ const schema = z.object({
     // server
     PORT: z.coerce.number().default(3000),
     NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
+    TRANSCODE_WORKER_COUNT: z.coerce.number(),
 
     // database
     DATABASE_URL: z.string().url(),
