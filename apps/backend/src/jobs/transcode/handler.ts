@@ -48,7 +48,10 @@ export const handleUpload: Processor = async (job: Job<UploadJobData>) => {
 
     await step(
         `Removing temp directory after syncing output to S3 bucket for uuid: ${uuid}`, 
-        async () => await rm("tmp/", {recursive: true})
+        async () => {
+            rm(`tmp/uploads/${uuid}.mp4`);
+            rm(`tmp/output/${uuid}`, {recursive: true});
+        }
     );
 }
 
