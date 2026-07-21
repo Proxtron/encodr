@@ -8,6 +8,7 @@ import { errorHandler } from "./middleware/error.js";
 import { pinoHttp } from "pino-http";
 import { logger } from "./config/logger.js";
 import userRouter from "./routes/userRouter.js";
+import { checkAuth } from "./middleware/auth.js";
 
 const app = express();
 
@@ -20,7 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(pinoHttp( { logger }));
 
 //Routers
-app.use("/video", videoRouter);
+app.use("/video", checkAuth, videoRouter);
 app.use("/user", userRouter);
 
 //Error handler
