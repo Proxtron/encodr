@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./LoginPage.module.css"
 import { apiRequest } from "../utils/client";
 import { useNavigate } from "react-router";
+import Cookies from 'js-cookie';
 
 interface LoginResponse {
     token: string;
@@ -11,10 +12,14 @@ const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const token = Cookies.get("token");
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
+  useEffect(() => {
+    if(token) navigate("/video");
+  }, [navigate, token]);
 
+  const handleLogin = async () => {
     try {
         await apiRequest<LoginResponse>("/user/login", {
             method: "POST",
@@ -24,7 +29,6 @@ const LoginPage = () => {
     } catch (error) {
         if(error instanceof Error) setError(error.message);
     }
-
   }
 
   return (
