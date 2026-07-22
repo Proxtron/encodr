@@ -26,7 +26,6 @@ const schema = z.object({
     CLIENT_HOST: z.string().url(),
 
     JWT_SECRET_KEY: z.string(),
-    TOKEN_HEADER_KEY: z.string(),
     CLIENT_USER: z.string(),
     CLIENT_PASSWORD: z.string()
 });

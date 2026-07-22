@@ -5,7 +5,7 @@ import { verifyJWT } from "../services/auth.js";
 
 export const checkAuth = async (req: Request, res: Response, next: NextFunction) => {
     const tokenHeaderKey = env.TOKEN_HEADER_KEY;
-    const token = req.get(tokenHeaderKey);
+    const token = req.cookies["token"];
     if(!token) {
         throw new AppError("Invalid token. Unauthenticated.", 401);
     }

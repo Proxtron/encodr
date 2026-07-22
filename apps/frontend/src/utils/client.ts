@@ -1,16 +1,25 @@
 const backendURL = import.meta.env.VITE_API_URL;
 
+interface ErrorResponse {
+    message: string;
+}
+
 export const apiRequest = async <T>(path: string, options: RequestInit = {}) => {
     const url = `${backendURL}${path}`;
     try {
-        const response = await fetch(url, options);
+        const response = await fetch(url, {
+            ...options,
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+                ...options.headers,
+            },
+        });
 
         if (!response.ok) {
-            throw new Error(`Response status: ${response.status}`);
+            const body = await response.json() as ErrorResponse;
+            throw new Error(body.message);
         }
-
-        // Return empty object for "204 No Content" responses (common in DELETE)
-        if (response.status === 204) return {} as T;
 
         return (await response.json()) as T;
     } catch (error) {
