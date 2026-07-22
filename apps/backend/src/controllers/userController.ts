@@ -15,6 +15,6 @@ export const loginUser = async (req: Request<{}, {}, {
 
     const token = getJWTToken(username, password);
 
-    res.cookie("token", token);
+    res.cookie("token", token, { domain: env.CLIENT_DOMAIN });
     return res.status(200).json({ token });
 };
