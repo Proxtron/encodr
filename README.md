@@ -70,7 +70,7 @@ Results:
 
 Throughput increases: 1.85x with 2 workers, 2.43x with 4 workers.
 
-This shows the realites of scaling a CPU intensive process on a single system. Running multiple CPU intensive workers on one box doesn't result in a proportionate increase in workers due to CPU contention.
+This shows the realites of scaling a CPU intensive process on a single system. Running multiple CPU intensive workers on one box doesn't result in a proportionate increase in throughput due to CPU contention.
 
 ### Tech stack
 
