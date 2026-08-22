@@ -9,8 +9,6 @@ Visit the [Live Site](https://encodr.pavelbratan.com/).
 
 Credentials are needed to access the live site. Contact pavelbratan2@gmail.com for access.
 
-Architecture — your diagram, then a prose walk through the flow: client requests a presigned URL, uploads directly to S3, S3 fires an event to SQS, the backend consumes it and enqueues transcode jobs to BullMQ, workers probe the source and generate an adaptive bitrate ladder, transcode to HLS, upload renditions back to S3, and CloudFront serves them to an HLS.js player.
-
 ## Architecture
 ### Upload Pipeline
 ![Upload Pipeline](assets/upload-architecture.png)
@@ -72,7 +70,7 @@ Results:
 
 Throughput increases: 1.85x with 2 workers, 2.43x with 4 workers.
 
-This shows the realites of scaling a CPU intensive process on a single system. Running multiple CPU intensive workers on one box doesn't result in a proportionate increase in workers due to CPU contention.
+This shows the realites of scaling a CPU intensive process on a single system. Running multiple CPU intensive workers on one box doesn't result in a proportionate increase in throughput due to CPU contention.
 
 ### Tech stack
 
