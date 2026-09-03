@@ -17,14 +17,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 26.x
-
-      - name: Cache npm downloads (frontend)
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: npm-frontend-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            npm-frontend-${{ runner.os }}-
+          cache: npm
 
       - run: npm ci --workspace=frontend --include-workspace-root
       - run: npm run build:frontend
@@ -45,14 +38,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 26.x
-
-      - name: Cache npm downloads (backend)
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: npm-backend-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            npm-backend-${{ runner.os }}-
+          cache: npm
 
       - run: npm ci --workspace=backend --include-workspace-root
       - run: npm run build:backend
