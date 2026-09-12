@@ -41,6 +41,7 @@ jobs:
           cache: npm
 
       - run: npm ci --workspace=backend --include-workspace-root
+      - run: npx --workspace=backend tsc --noEmit
       - run: npm test
 
   docker:
